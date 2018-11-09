@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <style>
+            body{
+                margin:0; padding:0;
+            }
+            div{
+                color: aliceblue;
+                height: 0;
+                padding: 25% 0;
+                background-color: #fc6c6c;        
+                display: flex;        
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                margin: 0 10px;
+            }
+        </style>
+    </head>
+    <body>
+      <!--一 、布局-->
+       <!--
+            1、元素要定位。
+            2、元素距离左右屏幕的距离一直是10px
+            3、字体水平垂直居中。
+            4、元素高度是宽度的一半
+       -->
+        <div>adsfasd</div>
+        <script>
+            /*给一个函数点击事件，中间加一个控制层*/
+            var oDiv = document.querySelector("div");            
+            function aa(){
+                console.log(33)
+            }
+            var bb = thrrot({time:1000})
+            oDiv.onclick = function(){
+                bb(aa)
+            }
+            /*防节流函数*/
+            function thrrot(configTime){
+                let time = 0;
+                return function(cb){
+                    var nowTime = new Date().getTime();
+                    if (time == 0 || nowTime - time > configTime.time) {
+                        async function fn(){
+                           await  cb()
+                           time = new Date().getTime();
+                        }
+                        fn()
+                    }
+                }
+            }
+            
+            /*任务列表, 栈任务, 宏任务， 微任务  值得注意*/
+            async function async1(){
+                console.log(1)
+                awit async2()
+                console.log(3)
+            }
+            async function async2(){
+                console.log("async2")
+            }
+            
+            setTimeout(()=>{
+                cosnole.log("setTimeout");
+            }, 0)
+            
+            console.log("scritp start");
+            async1()
+            
+            new Promise(resolve =>{
+                console.log(2);
+                resolve()
+            }).then(()=>{
+                cosnole.log("Promise")
+            })
+            
+            console.log("scritp end")
+            
+            //scritp start   1   async2  2 scritp end   Promise   3
+        </script>
+    </body>
+</html>
